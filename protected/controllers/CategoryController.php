@@ -17,7 +17,7 @@ class CategoryController extends Controller
 	{
 		return array(
 			'accessControl', // perform access control for CRUD operations
-			'postOnly + delete', // we only allow deletion via POST request
+			//'postOnly + delete', // we only allow deletion via POST request
 		);
 	}
 
@@ -38,7 +38,7 @@ class CategoryController extends Controller
 				'users'=>array('@'),
 			),
 			array('allow', // allow admin user to perform 'admin' and 'delete' actions
-				'actions'=>array('admin','delete'),
+				'actions'=>array('admin','delete','deleteChildCategories'),
 				'users'=>array('admin'),
 			),
 			array('deny',  // deny all users
@@ -72,8 +72,13 @@ class CategoryController extends Controller
 		if(isset($_POST['Category']))
 		{
 			$model->attributes=$_POST['Category'];
+                        $model->setAttribute('slug',$this->generate_slug($_POST['Category']['name']));
 			if($model->save())
-				$this->redirect(array('view','id'=>$model->id));
+                        {   
+                            Yii::app()->user->setFlash('success', 'Category created successfully.');
+                            $this->redirect($this->createUrl('admin'));
+                        }
+				//$this->redirect(array('view','id'=>$model->id));
 		}
 
 		$this->render('create',array(
@@ -97,7 +102,13 @@ class CategoryController extends Controller
 		{
 			$model->attributes=$_POST['Category'];
 			if($model->save())
-				$this->redirect(array('view','id'=>$model->id));
+                        {
+                            //Yii::app()->user->setFlash('success', 'Category updated successfully.');
+                            Yii::app()->user->setFlash('success', 'Category updated successfully.');
+                            //Yii::app()->getUser()->setFlash('error','Could not save data to the database.');
+                            $this->redirect($this->createUrl('admin'));
+			//	$this->redirect(array('view','id'=>$model->id));
+                        }
 		}
 
 		$this->render('update',array(
@@ -111,13 +122,23 @@ class CategoryController extends Controller
 	 * @param integer $id the ID of the model to be deleted
 	 */
 	public function actionDelete($id)
-	{
+	{       
+            
+                $this->actionDeleteChildCategories($id);
 		$this->loadModel($id)->delete();
-
+                
+                Yii::app()->user->setFlash('notice', 'Note : Deleted category has also deleted their subcategories.');
+                
+                Yii::app()->user->setFlash('success', 'Category deleted successfully.');
 		// if AJAX request (triggered by deletion via admin grid view), we should not redirect the browser
 		if(!isset($_GET['ajax']))
 			$this->redirect(isset($_POST['returnUrl']) ? $_POST['returnUrl'] : array('admin'));
 	}
+        public function actionDeleteChildCategories($parent_id){
+            $command = Yii::app()->db->createCommand();
+            $command->delete('category', 'parent_id=:pid', array(':pid'=>$parent_id));
+            $command->reset();  // clean up the previous query
+        }
 
 	/**
 	 * Lists all models.

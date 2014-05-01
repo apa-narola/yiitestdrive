@@ -1,6 +1,4 @@
 <?php
-//ashish
-/* @var $this CategoryController */
 /* @var $dataProvider CActiveDataProvider */
 
 $this->breadcrumbs=array(

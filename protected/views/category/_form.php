@@ -5,7 +5,7 @@
 ?>
 
 <div class="form">
-
+       
 <?php $form=$this->beginWidget('CActiveForm', array(
 	'id'=>'category-form',
 	// Please note: When you enable ajax validation, make sure the corresponding
@@ -51,7 +51,7 @@
 				CHtml::listData(Category::model()->findAll(
 				array('condition'=>'parent_id=0', 
 					  'order' => 'name ASC')), 'id', 'name'), 
-					  array('options' => array($model->parent_id => array('selected'=>true))),array('empty'=>'Select Parent Category')) ?>
+					  array('options' => array($model->parent_id => array('selected'=>true)),'empty'=>'Select Parent Category')); ?>
 		<?php echo $form->error($model,'parent_id'); ?>
 	</div>
 
