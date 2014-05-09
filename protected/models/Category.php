@@ -30,6 +30,8 @@ class Category extends CActiveRecord {
         // will receive user inputs.
         return array(
             array('parent_id', 'numerical', 'integerOnly' => true),
+            //array('category_image', 'file', 'allowEmpty' => true, 'types' => 'jpg, gif, png'),
+            array('category_image', 'file', 'allowEmpty' => true, 'types' => 'jpg, gif, png'),
             array('name, slug', 'length', 'max' => 255),
             array('name,short_description', 'required'),
             array('short_description, long_description, created, modified', 'safe'),
@@ -57,7 +59,7 @@ class Category extends CActiveRecord {
         // class name for the relations automatically generated below.
         return array(
             'rel_parent_cat' => array(self::BELONGS_TO, 'Category', 'parent_id'),
-            'rel_child_cat' => array(self::HAS_MANY, 'Category', 'parent_id','order' => 'id ASC'),
+            'rel_child_cat' => array(self::HAS_MANY, 'Category', 'parent_id', 'order' => 'id ASC'),
         );
     }
 
