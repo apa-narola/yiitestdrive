@@ -34,11 +34,11 @@ class Category extends CActiveRecord {
             array('category_image', 'file', 'allowEmpty' => true, 'types' => 'jpg, gif, png'),
             array('name, slug', 'length', 'max' => 255),
             array('name,short_description', 'required'),
-            array('short_description, long_description, created, modified', 'safe'),
+            array('short_description, long_description, created, updated', 'safe'),
             array('parent_id', 'default', 'setOnEmpty' => true, 'value' => 0),
             // The following rule is used by search().
             // @todo Please remove those attributes that should not be searched.
-            array('id, name, slug, short_description, long_description, parent_id, created, modified', 'safe', 'on' => 'search'),
+            array('id, name, slug, short_description, long_description, parent_id, created, updated', 'safe', 'on' => 'search'),
         );
     }
 
@@ -46,7 +46,7 @@ class Category extends CActiveRecord {
         if ($this->isNewRecord)
             $this->created = new CDbExpression('NOW()');
         else
-            $this->modified = new CDbExpression('NOW()');
+            $this->updated = new CDbExpression('NOW()');
 
         return parent::beforeSave();
     }
@@ -60,7 +60,16 @@ class Category extends CActiveRecord {
         return array(
             'rel_parent_cat' => array(self::BELONGS_TO, 'Category', 'parent_id'),
             'rel_child_cat' => array(self::HAS_MANY, 'Category', 'parent_id', 'order' => 'id ASC'),
+            'products' => array(self::MANY_MANY, 'Product', 'productCategory(productId, categoryId)'),
+            
         );
+
+        // relationship in company model
+        /*
+          return array(
+          'companyTrainings' => array(self::HAS_MANY, 'CompanyTraining', 'id_company'),
+          'trainings' => array(self::HAS_MANY, 'Training', 'id_training', 'through' => 'companyTraining'),
+          ); */
     }
 
     /**
@@ -75,7 +84,7 @@ class Category extends CActiveRecord {
             'long_description' => 'Long Description',
             'parent_id' => 'Parent',
             'created' => 'Created',
-            'modified' => 'Modified',
+            'updated' => 'Updated',
         );
     }
 
@@ -103,7 +112,7 @@ class Category extends CActiveRecord {
         $criteria->compare('long_description', $this->long_description, true);
         $criteria->compare('parent_id', $this->parent_id);
         $criteria->compare('created', $this->created, true);
-        $criteria->compare('modified', $this->modified, true);
+        $criteria->compare('updated', $this->updated, true);
 
         return new CActiveDataProvider($this, array(
             'criteria' => $criteria,
