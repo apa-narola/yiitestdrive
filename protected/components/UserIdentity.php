@@ -33,6 +33,7 @@ class UserIdentity extends CUserIdentity
 		$user = User::model()->findByAttributes(array(
            'username' => $this->username
         ));
+		
         if($user === null) {
             $this->errorCode=self::ERROR_UNKNOWN_IDENTITY;
         } elseif(!CPasswordHelper::verifyPassword($this->password, $user->password)) {

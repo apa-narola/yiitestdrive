@@ -47,8 +47,8 @@
 	</div>
 
 	<div class="row">
-		<?php echo $form->label($model,'modified'); ?>
-		<?php echo $form->textField($model,'modified'); ?>
+		<?php echo $form->label($model,'updated'); ?>
+		<?php echo $form->textField($model,'updated'); ?>
 	</div>-->
 
 	<div class="row buttons">

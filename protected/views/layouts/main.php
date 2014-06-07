@@ -55,15 +55,8 @@
             $page = $page[0]; //get the controller instance.
 
             $page_info = $page->actionGetPages(); //use a public method.
-            $header_items = $footer_items = array(
-                array('label' => 'Home', 'url' => array('/site/index')),
-                // array('label'=>'About', 'url'=>array('/site/page', 'view'=>'about')),
-                // array('label'=>'Contact', 'url'=>array('/site/contact')),
-                array('label' => 'CMS', 'url' => array('/page/admin'), 'items' => $this->page_menu, 'visible' => !Yii::app()->user->isGuest),
-                array('label' => 'Category', 'url' => array('/category/admin'), 'items' => $this->category_menu, 'visible' => !Yii::app()->user->isGuest),
-                array('label' => 'Login', 'url' => array('/site/login'), 'visible' => Yii::app()->user->isGuest),
-                array('label' => 'Logout (' . Yii::app()->user->name . ')', 'url' => array('/site/logout'), 'visible' => !Yii::app()->user->isGuest),
-            );
+            $pages_header_items = array();
+            $pages_footer_items = array();
             foreach ($page_info as $p_key => $p_value) {
 
                 $route = "page/show";
@@ -79,11 +72,36 @@
 
 
                 if ($p_value["menu_option"] == "headmenu")
-                    array_push($header_items, array('label' => $p_value['page_title'], 'url' => $url));
+                    array_push($pages_header_items, array('label' => $p_value['page_title'], 'url' => $url));
 
                 if ($p_value["menu_option"] == "footmenu")
-                    array_push($footer_items, array('label' => $p_value['page_title'], 'url' => $url));
+                    array_push($pages_footer_items, array('label' => $p_value['page_title'], 'url' => $url));
             }
+            $header_items = array(
+                array('label' => 'Home', 'url' => array('/site/index')),
+                // array('label'=>'About', 'url'=>array('/site/page', 'view'=>'about')),
+                // array('label'=>'Contact', 'url'=>array('/site/contact')),
+                array('label' => 'Pages', 'url' => '', 'items'=>$pages_header_items,'visible' => Yii::app()->user->isGuest),
+                array('label' => 'CMS', 'url' => array('/page/admin'), 'items' => $this->page_menu, 'visible' => !Yii::app()->user->isGuest),
+                array('label' => 'Category', 'url' => array('/category/admin'), 'items' => $this->category_menu, 'visible' => !Yii::app()->user->isGuest),
+                
+array('url'=>Yii::app()->getModule('user')->loginUrl, 'label'=>Yii::app()->getModule('user')->t("Login"), 'visible'=>Yii::app()->user->isGuest),
+array('url'=>Yii::app()->getModule('user')->registrationUrl, 'label'=>Yii::app()->getModule('user')->t("Register"), 'visible'=>Yii::app()->user->isGuest),
+array('url'=>Yii::app()->getModule('user')->profileUrl, 'label'=>Yii::app()->getModule('user')->t("Profile"), 'visible'=>!Yii::app()->user->isGuest),
+array('url'=>Yii::app()->getModule('user')->logoutUrl, 'label'=>Yii::app()->getModule('user')->t("Logout").' ('.Yii::app()->user->name.')', 'visible'=>!Yii::app()->user->isGuest),
+            );
+
+             $footer_items = array(
+                array('label' => 'Home', 'url' => array('/site/index')),
+                // array('label'=>'About', 'url'=>array('/site/page', 'view'=>'about')),
+                // array('label'=>'Contact', 'url'=>array('/site/contact')),
+                array('label' => 'Pages', 'url' => '', 'items'=>$pages_footer_items,'visible' => Yii::app()->user->isGuest),
+                array('label' => 'CMS', 'url' => array('/page/admin'), 'items' => $this->page_menu, 'visible' => !Yii::app()->user->isGuest),
+                array('label' => 'Category', 'url' => array('/category/admin'), 'items' => $this->category_menu, 'visible' => !Yii::app()->user->isGuest),
+                array('label' => 'Login', 'url' => array('/site/login'), 'visible' => Yii::app()->user->isGuest),
+                array('label' => 'Logout (' . Yii::app()->user->name . ')', 'url' => array('/site/logout'), 'visible' => !Yii::app()->user->isGuest),
+            );
+          
             ?>
             <div id="mainmenu">
                 <?php
