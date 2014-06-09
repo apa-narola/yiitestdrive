@@ -1,1 +1,0 @@
-ALTER TABLE  `category` ADD  `category_image` VARCHAR( 255 ) NOT NULL AFTER  `name` ;

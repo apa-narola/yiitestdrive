@@ -8,6 +8,8 @@ return array(
     'basePath' => dirname(__FILE__) . DIRECTORY_SEPARATOR . '..',
     'name' => 'Yii Framework Demo - Ashish Patel',
     'defaultController' => 'site',
+    'sourceLanguage' => 'en',
+    'language' => 'fr',
     // preloading 'log' component
     'preload' => array('log'),
     // autoloading model and component classes
@@ -16,6 +18,7 @@ return array(
 	'application.components.*',
 	'application.modules.user.models.*',
 	'application.modules.user.components.*',
+	'application.extensions.yii-mail.*'
     ),
     'modules' => array(
 	'user' => array(
@@ -50,6 +53,29 @@ return array(
     ),
     // application components
     'components' => array(
+	'Smtpmail' => array(
+	    'class' => 'application.extensions.smtpmail.PHPMailer',
+	    'Host' => "smtp.1and1.com",
+	    'Username' => 'apa.narola@narolainfotech.com',
+	    'Password' => 'PDh4kf638PZ4NNd',
+	    'Mailer' => 'smtp',
+	    'Port' => 587,
+	    'SMTPAuth' => true,
+	),
+	'mail' => array(
+	    'class' => 'ext.yii-mail.YiiMail',
+	    'transportType' => 'smtp',
+	    'transportOptions' => array(
+		'host' => 'smtp.1and1.com',
+		'username' => 'apa.narola@narolainfotech.com',
+		'password' => 'PDh4kf638PZ4NNd',
+		'port' => '587',
+		'encryption' => 'tls',
+	    ),
+	    'viewPath' => 'application.views.mail',
+	    'logging' => true,
+	    'dryRun' => false
+	),
 	'user' => array(
 	    // enable cookie-based authentication
 	    'class' => 'WebUser',
@@ -126,6 +152,8 @@ return array(
     // using Yii::app()->params['paramName']
     'params' => array(
 	// this is used in contact page
-	'adminEmail' => 'webmaster@example.com',
+	'adminEmail' => 'apa.narola@narolainfotech.com',
+	'adminFromEmail' => 'info@narolainfotech.com',
+	'pathImagesDir' => dirname(__FILE__) . DIRECTORY_SEPARATOR . '..' . DIRECTORY_SEPARATOR . '..' . DIRECTORY_SEPARATOR . 'images' . DIRECTORY_SEPARATOR
     ),
 );

@@ -79,8 +79,8 @@
             }
             $header_items = array(
                 array('label' => 'Home', 'url' => array('/site/index')),
-                // array('label'=>'About', 'url'=>array('/site/page', 'view'=>'about')),
-                // array('label'=>'Contact', 'url'=>array('/site/contact')),
+                array('label'=>'About', 'url'=>array('/site/page', 'view'=>'about')),
+                array('label'=>'Contact', 'url'=>array('/site/contact')),
                 array('label' => 'Pages', 'url' => '', 'items'=>$pages_header_items,'visible' => Yii::app()->user->isGuest),
                 array('label' => 'CMS', 'url' => array('/page/admin'), 'items' => $this->page_menu, 'visible' => !Yii::app()->user->isGuest),
                 array('label' => 'Category', 'url' => array('/category/admin'), 'items' => $this->category_menu, 'visible' => !Yii::app()->user->isGuest),
