@@ -8,8 +8,15 @@ return array(
     'basePath' => dirname(__FILE__) . DIRECTORY_SEPARATOR . '..',
     'name' => 'Yii Framework Demo - Ashish Patel',
     'defaultController' => 'site',
-    'sourceLanguage' => 'en',
-    'language' => 'fr',
+    'sourceLanguage'=>'en',
+    // Associates a behavior-class with the onBeginRequest event.
+    // By placing this within the primary array, it applies to the application as a whole
+    'behaviors'=>array(
+        'onBeginRequest' => array(
+            'class' => 'application.components.behaviors.BeginRequest'
+        ),
+    ),
+ 
     // preloading 'log' component
     'preload' => array('log'),
     // autoloading model and component classes
@@ -53,6 +60,11 @@ return array(
     ),
     // application components
     'components' => array(
+	// for language purpose
+	 'request'=>array(
+            'enableCookieValidation'=>true,
+            'enableCsrfValidation'=>true,
+        ),
 	'Smtpmail' => array(
 	    'class' => 'application.extensions.smtpmail.PHPMailer',
 	    'Host' => "smtp.1and1.com",
@@ -82,6 +94,7 @@ return array(
 	    'allowAutoLogin' => true,
 	    'loginUrl' => array('/user/login'),
 	),
+	
 	// uncomment the following to enable URLs in path-format
 
 	/* 'urlManager'=>array(
@@ -154,6 +167,7 @@ return array(
 	// this is used in contact page
 	'adminEmail' => 'apa.narola@narolainfotech.com',
 	'adminFromEmail' => 'info@narolainfotech.com',
-	'pathImagesDir' => dirname(__FILE__) . DIRECTORY_SEPARATOR . '..' . DIRECTORY_SEPARATOR . '..' . DIRECTORY_SEPARATOR . 'images' . DIRECTORY_SEPARATOR
+	'pathImagesDir' => dirname(__FILE__) . DIRECTORY_SEPARATOR . '..' . DIRECTORY_SEPARATOR . '..' . DIRECTORY_SEPARATOR . 'images' . DIRECTORY_SEPARATOR,
+	 'languages'=>array('tr'=>'Türkçe', 'en'=>'English', 'de'=>'Deutsch'),
     ),
 );
